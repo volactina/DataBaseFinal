@@ -29,7 +29,7 @@ create table if not exists NATION
   N_NAME char(25),
   N_REGIONKEY int,
   N_COMMENT varchar(152),
-  foreign key(N_REGIONKEY) references REGION(R_REGIONKEY)
+  foreign key(N_REGIONKEY) references REGION(R_REGIONKEY) on delete cascade
 );
 describe NATION;
 
@@ -43,7 +43,7 @@ create table if not exists SUPPLIER
   S_PHONE char(15),
   S_ACCTBAL double,
   S_COMMENT varchar(101),
-  foreign key(S_NATIONKEY) references NATION(N_NATIONKEY)
+  foreign key(S_NATIONKEY) references NATION(N_NATIONKEY) on delete cascade
 );
 describe SUPPLIER;
 
@@ -55,8 +55,8 @@ create table if not exists PARTSUPP
   PS_SUPPLYCOST double,
   PS_COMMENT varchar(199),
   primary key(PS_PARTKEY, PS_SUPPKEY),
-  foreign key(PS_PARTKEY) references PART(P_PARTKEY),
-  foreign key(PS_SUPPKEY) references SUPPLIER(S_SUPPKEY)
+  foreign key(PS_PARTKEY) references PART(P_PARTKEY) on delete cascade,
+  foreign key(PS_SUPPKEY) references SUPPLIER(S_SUPPKEY) on delete cascade
 );
 describe PARTSUPP;
 
@@ -70,7 +70,7 @@ create table if not exists CUSTOMER
   C_ACCTBAL double,
   C_MKTSEGMENT char(10),
   C_COMMENT varchar(117),
-  foreign key(C_NATIONKEY) references NATION(N_NATIONKEY)
+  foreign key(C_NATIONKEY) references NATION(N_NATIONKEY) on delete cascade
 );
 describe CUSTOMER;
 
@@ -88,7 +88,7 @@ create table if not exists ORDERS
   O_CLERK char(15),
   O_SHIPPRIORITY int,
   O_COMMENT varchar(79),
-  foreign key(O_CUSTKEY) references CUSTOMER(C_CUSTKEY)
+  foreign key(O_CUSTKEY) references CUSTOMER(C_CUSTKEY) on delete cascade
 );
 describe ORDERS;
 
@@ -112,10 +112,10 @@ create table if not exists LINEITEM
   L_SHIPMODE char(10),
   L_COMMENT varchar(44),
   primary key(L_ORDERKEY, L_LINENUMBER),
-  foreign key(L_ORDERKEY) references ORDERS(O_ORDERKEY),
-  foreign key(L_PARTKEY) references PART(P_PARTKEY),
-  foreign key(L_SUPPKEY) references SUPPLIER(S_SUPPKEY),
-  foreign key(L_PARTKEY,L_SUPPKEY) references PARTSUPP(PS_PARTKEY, PS_SUPPKEY)
+  foreign key(L_ORDERKEY) references ORDERS(O_ORDERKEY) on delete cascade,
+  foreign key(L_PARTKEY) references PART(P_PARTKEY) on delete cascade,
+  foreign key(L_SUPPKEY) references SUPPLIER(S_SUPPKEY) on delete cascade,
+  foreign key(L_PARTKEY,L_SUPPKEY) references PARTSUPP(PS_PARTKEY, PS_SUPPKEY) on delete cascade
 );
 describe LINEITEM;
 
